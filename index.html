@@ -58,14 +58,20 @@
         <label for="raw">No Cleanup</label>
       </dt>
       <dd>Raw output.</dd>
+      <br>
       <div>
         <button type="submit" onClick="launch()">Compute Diff</button>
       </div>
   </form>
-
   <div class="flex-row">
-    <pre id="result-before" class="width-half"></pre>
-    <pre id="result-after" class="width-half"></pre>
+    <div class="width-half">
+      <h2>Diff Text Version 1:</h2>
+      <pre id="result-before"></pre>
+    </div>
+    <div class="width-half">
+      <h2>Diff Text Version 2:</h2>
+      <pre id="result-after"></pre>
+    </div>
   </div>
   <div id="time"></div>
   <script>
