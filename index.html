@@ -15,11 +15,15 @@
     <div class="flex-row">
       <div class="width-half">
         <h2>Text Version 1:</h2>
-        <textarea id="text1" class="width-full" rows="10">{"Aidan Gillen": {"array": ["Game of Thron\"es","The Wire"],"string": "some string","int": 2,"aboolean": true, "boolean": true,"object": {"foo": "bar","object1": {"new prop1": "new prop value"},"object2": {"new prop1": "new prop value"},"object3": {"new prop1": "new prop value"},"object4": {"new prop1": "new prop value"}}},"Amy Ryan": {"one": "In Treatment","two": "The Wire"},"Annie Fitzgerald": ["Big Love","True Blood"],"Anwan Glover": ["Treme","The Wire"],"Alexander Skarsgard": ["Generation Kill","True Blood"], "Clarke Peters": null}</textarea>
+        <textarea id="text1" class="width-full"
+          rows="10">{"Aidan Gillen": {"array": ["Game of Thron\"es","The Wire"],"string": "some string","int": 2,"aboolean": true, "boolean": true,"object": {"foo": "bar","object1": {"new prop1": "new prop value"},"object2": {"new prop1": "new prop value"},"object3": {"new prop1": "new prop value"},"object4": {"new prop1": "new prop value"}}},"Amy Ryan": {"one": "In Treatment","two": "The Wire"},"Annie Fitzgerald": ["Big Love","True Blood"],"Anwan Glover": ["Treme","The Wire"],"Alexander Skarsgard": ["Generation Kill","True Blood"], "Clarke Peters": null}</textarea>
+        <label id="text1-error" for="text1" class="error"></label>
       </div>
       <div class="width-half">
         <h2>Text Version 2:</h2>
-        <textarea id="text2" class="width-full" rows="10">{"Aidan Gillen": {"array": ["Game of Thrones","The Wire"],"string": "some string","int": "2","otherint": 4, "aboolean": "true", "boolean": false,"object": {"foo": "bar"}},"Amy Ryan": ["In Treatment","The Wire"],"Annie Fitzgerald": ["True Blood","Big Love","The Sopranos","Oz"],"Anwan Glover": ["Treme","The Wire"],"Alexander Skarsg?rd": ["Generation Kill","True Blood"],"Alice Farmer": ["The Corner","Oz","The Wire"]}</textarea>
+        <textarea id="text2" class="width-full"
+          rows="10">{"Aidan Gillen": {"array": ["Game of Thrones","The Wire"],"string": "some string","int": "2","otherint": 4, "aboolean": "true", "boolean": false,"object": {"foo": "bar"}},"Amy Ryan": ["In Treatment","The Wire"],"Annie Fitzgerald": ["True Blood","Big Love","The Sopranos","Oz"],"Anwan Glover": ["Treme","The Wire"],"Alexander Skarsg?rd": ["Generation Kill","True Blood"],"Alice Farmer": ["The Corner","Oz","The Wire"]}</textarea>
+        <label id="text2-error" for="text2" class="error"></label>
       </div>
     </div>
     <h3>Diff timeout:</h3>
@@ -70,11 +74,25 @@
     function launch() {
       const text1 = document.getElementById('text1').value
       const text2 = document.getElementById('text2').value
+      let object1 = null
+      let object2 = null
+      try {
+        object1 = JSON.parse(text1)
+      } catch (error) {
+        document.getElementById('text1-error').innerText = 'Parse Text Version 1 error: ' + error
+        throw ('Parse Text Version 1 error: ' + error)
+      }
+      try {
+        object2 = JSON.parse(text2)
+      } catch (error) {
+        document.getElementById('text2-error').innerText = 'Parse Text Version 2 error: ' + error
+        throw ('Parse Text Version 2 error: ' + error)
+      }
       dmp.Diff_Timeout = parseFloat(document.getElementById('timeout').value)
       dmp.Diff_EditCost = parseFloat(document.getElementById('edit-cost').value)
 
       const msStart = (new Date()).getTime()
-      const d = dmp.diff_main(text1, text2)
+      const d = dmp.diff_main(JSON.stringify(object1, null, 2), JSON.stringify(object2, null, 2))
       const msEnd = (new Date()).getTime()
 
       if (document.getElementById('semantic').checked) {

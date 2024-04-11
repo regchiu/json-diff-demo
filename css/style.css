@@ -10,3 +10,8 @@
 .width-full {
   width: 100%;
 }
+
+.error {
+  color: #d12f19;
+  background:#ffe6e6;
+}

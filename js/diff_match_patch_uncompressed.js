@@ -1284,35 +1284,19 @@ diff_match_patch.prototype.diff_prettyJSON = function(diffs) {
     diff_insert: [],
     diff_delete: []
   };
-  var pattern_amp = /&/g;
-  var pattern_lt = /</g;
-  var pattern_gt = />/g;
-  var pattern_para = /\n/g;
-  var pattern_opening_brace = /{/g;
-  var pattern_closing_brace = /}/g;
-  var pattern_comma = /,/g;
-  var pattern_opening_bracket = /\[/g;
-  var pattern_closing_bracket = /\]/g;
   for (var x = 0; x < diffs.length; x++) {
     var op = diffs[x][0];    // Operation (insert, delete, equal)
     var data = diffs[x][1];  // Text of change.
-    var text = data.replace(pattern_amp, '&amp;').replace(pattern_lt, '&lt;')
-        .replace(pattern_gt, '&gt;').replace(pattern_para, '&para;<br>')
-        .replace(pattern_opening_brace, '&#123;<br>')
-        .replace(pattern_closing_brace, '<br>&#125;')
-        .replace(pattern_opening_bracket, '&#91;<br>')
-        .replace(pattern_closing_bracket, '<br>&#93;')
-        .replace(pattern_comma, '&#44;<br>');
     switch (op) {
       case DIFF_INSERT:
-        html['diff_insert'][x] = '<ins style="background:#e6ffe6;">' + text + '</ins>';
+        html['diff_insert'][x] = '<ins style="background:#e6ffe6;">' + data + '</ins>';
         break;
       case DIFF_DELETE:
-        html['diff_delete'][x] = '<del style="background:#ffe6e6;">' + text + '</del>';
+        html['diff_delete'][x] = '<del style="background:#ffe6e6;">' + data + '</del>';
         break;
       case DIFF_EQUAL:
-        html['diff_insert'][x] = '<span>' + text + '</span>';
-        html['diff_delete'][x] = '<span>' + text + '</span>';
+        html['diff_insert'][x] = '<span>' + data + '</span>';
+        html['diff_delete'][x] = '<span>' + data + '</span>';
         break;
     }
   }
